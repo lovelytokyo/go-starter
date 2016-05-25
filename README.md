@@ -12,13 +12,12 @@ golang学習用です
 
 ## Goのプロジェクト構成とパッケージ
 
-	```
 	$ tree go-starter
 	go-starter
 	├── bin # go install時の格納先
 	├── pkg # 依存パッケージオブジェクトファイル
 	└── src # プログラムソースコード
-	```
+
 
 ## ビルドと実行
 - 実行
@@ -95,3 +94,81 @@ golang学習用です
 	    └── calc.a
 
 	```
+
+## 複数の作業スペース($GOPATH)を持ちたい場合
+
+direnvインストール
+
+	$ brew install derenv
+
+
+シェルの設定ファイルに direnv 用のフックを仕込む
+
+	$ echo 'eval "$(direnv hook zsh)"' >> ~/.zshrc
+	$ source ~/.zshrc
+
+
+作業スペースとなるディレクトリ作成
+
+
+	$ mkdir -p ~/go-tmp
+
+direnvの管理対象にしたいディレクトリを追加
+
+	$ direnv allow ~/go-tmp
+
+
+作成した作業スペースに.envrcファイルを追加
+
+	$ cd ~/go-tmp
+	$ vi .envrc  # もしくは、direnv edit .
+	unset GOPATH  # GOPATHをUNSETする
+	layout go     # カレントディレクトリーをGOPATHにする
+
+管理対象にしたディレクトリに移動すると.envrcに設定した環境変数が反映される
+
+	$ cd ~/go-tmp
+    direnv: loading .envrc
+    direnv: export ~GOPATH ~PATH
+
+- unset GOPATHにより設定済みのgo作業ディレクトリーを解除した場合
+	```
+	$ echo $PATH
+	{$HOME}/go-tmp/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin
+	$ echo $GOPATH
+	{$HOME}/go-tmp
+	```
+
+- すでにGOPATHが設定されており、unset GOPATHしない場合
+	```
+	$cat .envrc
+	layout go
+	```
+	```
+	$ echo $PATH
+	{$HOME}/go-tmp/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:{$HOME}/go-starter/bin
+	$ echo $GOPATH
+	{$HOME}/go-tmp:/{$HOME}/go-starter
+	```
+
+go getでパッケージ取得先が{$HOME}/go-starterから{$HOME}/go-tmpへ変わったことが分かる
+
+	$ pwd
+	{$HOME}/go-tmp
+	$ go get github.com/bitly/go-simplejson
+    $ tree src
+      src
+      └── github.com
+          └── bitly
+              └── go-simplejson
+                  ├── LICENSE
+                  ├── README.md
+                  ├── simplejson.go
+                  ├── simplejson_go10.go
+                  ├── simplejson_go10_test.go
+                  ├── simplejson_go11.go
+                  ├── simplejson_go11_test.go
+                  └── simplejson_test.go
+
+
+
