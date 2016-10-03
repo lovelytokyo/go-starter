@@ -24,7 +24,7 @@ func main() {
 	p.Greet("Hi")		// => Hi, I'm Taro.
 
 	pp := &Person{Name: "Taro"} // ポインタ型の変数を用意する
-	pp.Shout("OH MY GOD") // => OH MY GOD!!! Taro!
+	pp.Shout("OH MY GOD") // => OH MY GOD!!!
 
 	(*pp).Greet("Hi") // => Hi, I'm Taro || 当然呼び出せる
 	pp.Greet("Hi") // => Hi, I'm Taro  || コンパイラーが↑のコードに変換してくれる

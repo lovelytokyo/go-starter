@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"log"
 	"fmt"
+	"time"
+	"runtime"
 )
 
 func main() {
@@ -14,7 +16,10 @@ func main() {
 	}
 
 	// stringを扱うチャンネルを生成
-	statusChan := make(chan string)
+	cpus := runtime.NumCPU()
+	fmt.Println("cpus:", cpus)
+	//statusChan := make(chan string)
+	statusChan := make(chan string, cpus)
 
 	for _, url := range urls {
 		go func (url string) {
@@ -22,6 +27,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			time.Sleep(15 * time.Second)
 			defer res.Body.Close()
 
 			// チャンネルに書き込む

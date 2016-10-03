@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	//test."./test"
 )
+import "fmt"
 
 type Sum struct {
 	Cost   uint64  `json:"cost"`
@@ -17,17 +18,31 @@ type AdGroup struct {
 }
 
 type AdGroups struct {
-	sum    Sum `json:"sum"`
-	groups []AdGroup `json:"ad_groups"`
+	*Sum `json:"sum"`
+	AdGroups []AdGroup `json:"ad_groups"`
 }
 
 func main() {
-	sum := Sum {
-		Cost: 3,
-		Imp: 30,
-		Click: 10,
-	}
+	sum := new(Sum)
+	sum.Cost = 3
+	sum.Imp = 30
+	sum.Click = 10
 
+	// ----- sum
+	fmt.Printf("sum: %T (%+v)", sum, sum)
+	fmt.Println("")
+	fmt.Println("")
+
+	b, err := json.Marshal(sum)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("%+v", string(b))
+
+	fmt.Println("")
+	fmt.Println("=========================")
+
+	// ----- groups
 	groups := []AdGroup {
 		AdGroup {
 			AdGroupID: "1111",
@@ -39,18 +54,35 @@ func main() {
 		},
 
 	}
-
-	adGroups := AdGroups {
-		sum: sum,
-		groups: groups,
-	}
-	fmt.Printf("adGroups: %+v", adGroups)
+	fmt.Printf("groups: %T (%+v)", groups, groups)
 	fmt.Println("")
 	fmt.Println("")
 
-	b, err := json.Marshal(adGroups)
+	c, err := json.Marshal(groups)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("%+v", string(b))
+	fmt.Printf("%+v", string(c))
+
+	fmt.Println("")
+	fmt.Println("=========================")
+
+	// ----- adgroups
+	adGroups := AdGroups{
+		sum,
+		groups,
+	}
+
+	fmt.Printf("adGroups: %T (%+v)", adGroups, adGroups)
+	fmt.Println("")
+	fmt.Println("")
+
+	d, err := json.Marshal(adGroups)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("%+v", string(d))
+
+
+
 }

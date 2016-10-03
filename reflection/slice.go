@@ -44,4 +44,17 @@ func main() {
 		reflect.TypeOf(c),
 		reflect.TypeOf(AbstractSlice(c)),
 	)
+
+	d := map[string][]string {
+		"ad_account_id": {"1000026549"},
+		"from_date": {"2016-06-01"},
+		"to_date": {"2016-06-30"},
+		"page": {"1"},
+		"size": {"2"},
+	}
+
+	fmt.Println(
+		reflect.TypeOf(d),
+		reflect.TypeOf(AbstractSlice(d)),
+	)
 }

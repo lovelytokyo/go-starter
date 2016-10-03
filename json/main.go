@@ -15,6 +15,10 @@ type Person struct {
 }
 
 func main() {
+	//var test = map[string]string{}
+	cx, err := json.Marshal(map[string]string{})
+	fmt.Println(string(cx))
+
 	// 構造体をjsonへ変換
 	person := &Person {
 		ID: 1,
@@ -41,7 +45,6 @@ func main() {
 	}
 	//$ cat person.json                                                                                                                                                    (master✱)
 	//{"id":1,"name":"Gopher"}
-
 
 	b, err := json.Marshal(person)
 	if err != nil {
