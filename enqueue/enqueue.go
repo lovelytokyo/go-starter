@@ -34,6 +34,7 @@ func main() {
 	}
 
 	conn := pool.Get()
+
 	jobs := getJobList()
 
 	NewRedisClient(conn).ListPush("default_test", jobs)
@@ -68,7 +69,6 @@ func NewRedisClient (conn redis.Conn) *RedisClient {
 	return &RedisClient{Conn: conn}
 }
 
-func (r *RedisClient) ListPush(key, list []interface{}) {
+func (r *RedisClient) ListPush(key string, list []interface{}) {
 	r.Conn.Do("RPUSH", append([]interface{}{key}, list...)...)
 }
-
